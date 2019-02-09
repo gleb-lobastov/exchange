@@ -2,8 +2,8 @@ import React from 'react';
 import { mount, render } from 'enzyme';
 import CurrencySelector from '../CurrencySelector';
 
-describe('PocketBalance', () => {
-  it('should render passed balance', () => {
+describe('CurrencySelector', () => {
+  it('should render selected pocket currency code in closed state', () => {
     const instance = render(
       <CurrencySelector
         selectedCurrencyCode="USD"
@@ -18,7 +18,7 @@ describe('PocketBalance', () => {
     ).toEqual('USD');
   });
 
-  it('should render passed balance', () => {
+  it('should render suggested currencies in opened state', () => {
     const suggestedCurrencies = ['USD', 'EUR', 'RUB'];
     const instance = mount(
       <CurrencySelector

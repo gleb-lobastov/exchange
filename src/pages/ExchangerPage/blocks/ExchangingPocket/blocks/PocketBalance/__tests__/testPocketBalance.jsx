@@ -4,7 +4,7 @@ import PocketBalance from '../PocketBalance';
 
 let pocket;
 beforeEach(() => {
-  pocket = { amount: 2.54313, currencyCode: 'USD' };
+  pocket = { balance: 2.54313, currencyCode: 'USD' };
 });
 
 describe('PocketBalance', () => {
