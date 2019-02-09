@@ -1,0 +1,56 @@
+{
+  "name": "exchange",
+  "version": "0.1.0",
+  "description": "Exchange rates calculator",
+  "main": "src/index.js",
+  "scripts": {
+    "start": "NODE_ENV=development webpack-dev-server",
+    "build": "webpack",
+    "test": "jest"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/gleb-lobastov/exchange.git"
+  },
+  "keywords": [
+    "currency",
+    "exchange",
+    "rates",
+    "calculator"
+  ],
+  "author": "Gleb Lobastov",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/gleb-lobastov/exchange/issues"
+  },
+  "homepage": "https://github.com/gleb-lobastov/exchange#readme",
+  "devDependencies": {
+    "@babel/core": "^7.2.2",
+    "@babel/preset-env": "^7.3.1",
+    "@babel/preset-react": "^7.0.0",
+    "babel-eslint": "^10.0.1",
+    "babel-loader": "^8.0.5",
+    "clean-webpack-plugin": "^1.0.1",
+    "css-loader": "^2.1.0",
+    "enzyme": "^3.8.0",
+    "enzyme-adapter-react-16": "^1.9.1",
+    "eslint": "^5.3.0",
+    "eslint-config-airbnb": "^17.1.0",
+    "eslint-config-prettier": "^4.0.0",
+    "eslint-plugin-import": "^2.16.0",
+    "eslint-plugin-jsx-a11y": "^6.2.1",
+    "eslint-plugin-react": "^7.12.4",
+    "html-webpack-plugin": "^3.2.0",
+    "jest": "^24.1.0",
+    "prettier": "^1.16.4",
+    "style-loader": "^0.23.1",
+    "webpack": "^4.29.3",
+    "webpack-cli": "^3.2.3",
+    "webpack-dev-server": "^3.1.14"
+  },
+  "dependencies": {
+    "@babel/polyfill": "^7.2.5",
+    "react": "^16.8.1",
+    "react-dom": "^16.8.1"
+  }
+}
