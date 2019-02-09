@@ -30,6 +30,20 @@
         }
       }
     ],
-    "react/jsx-boolean-value": ["error", "always"]
+    "react/jsx-boolean-value": ["error", "always"],
+    "import/extensions": [
+      "error",
+      "always",
+      {
+        "js": "never",
+        "jsx": "never"
+      }
+    ],
+    "import/no-extraneous-dependencies": [
+      "error",
+      {
+        "packageDir": "./"
+      }
+    ]
   }
 }
