@@ -8,17 +8,19 @@ const CurrencySelector = ({
   suggestedCurrencies,
   ...forwardedProps
 }) => (
-  <Select {...forwardedProps} value={selectedCurrencyCode}>
-    {suggestedCurrencies.map(suggestedCurrency => (
-      <MenuItem key={suggestedCurrency} value={suggestedCurrency}>
-        <div
-          data-locator={`exchanger-pocket-selector-option-${suggestedCurrency}`}
-        >
-          {suggestedCurrency}
-        </div>
-      </MenuItem>
-    ))}
-  </Select>
+  <div data-locator="exchanger-pocket-selector">
+    <Select {...forwardedProps} value={selectedCurrencyCode}>
+      {suggestedCurrencies.map(suggestedCurrency => (
+        <MenuItem key={suggestedCurrency} value={suggestedCurrency}>
+          <div
+            data-locator={`exchanger-pocket-selector-option-${suggestedCurrency}`}
+          >
+            {suggestedCurrency}
+          </div>
+        </MenuItem>
+      ))}
+    </Select>
+  </div>
 );
 
 CurrencySelector.propTypes = {
