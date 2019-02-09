@@ -1,4 +1,5 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import ExchangerPage from './pages/ExchangerPage';
 
-ReactDOM.render(<div>I am alive</div>, document.getElementById('app'));
+ReactDOM.render(<ExchangerPage />, document.getElementById('app'));
