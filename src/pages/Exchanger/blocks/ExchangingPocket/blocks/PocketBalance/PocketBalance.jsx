@@ -1,11 +1,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-const PocketBalance = ({ amount, currencyCode }) => {
+const PocketBalance = ({ pocket: { balance, currencyCode } }) => {
   const formattedAmount = Intl.NumberFormat('en', {
     style: 'currency',
     currency: currencyCode,
-  }).format(amount);
+  }).format(balance);
 
   return (
     <div data-locator="exchanger-pocket-balance-value">{formattedAmount}</div>
@@ -13,8 +13,10 @@ const PocketBalance = ({ amount, currencyCode }) => {
 };
 
 PocketBalance.propTypes = {
-  amount: PropTypes.number.isRequired,
-  currencyCode: PropTypes.string.isRequired,
+  pocket: PropTypes.shape({
+    balance: PropTypes.number.isRequired,
+    currencyCode: PropTypes.string.isRequired,
+  }).isRequired,
 };
 
 export default PocketBalance;
