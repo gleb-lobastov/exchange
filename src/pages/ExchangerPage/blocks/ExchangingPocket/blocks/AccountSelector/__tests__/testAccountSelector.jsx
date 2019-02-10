@@ -5,9 +5,9 @@ import AccountSelector from '../AccountSelector';
 let availableAccounts;
 beforeEach(() => {
   availableAccounts = {
-    1: { accountId:1, currencyCode: 'USD' },
-    2: { accountId:2, currencyCode: 'EUR' },
-    3: { accountId:3, currencyCode: 'RUB' },
+    1: { accountId: 1, currencyCode: 'USD' },
+    2: { accountId: 2, currencyCode: 'EUR' },
+    3: { accountId: 3, currencyCode: 'RUB' },
   };
 });
 
