@@ -30,7 +30,7 @@ const Loader = ({ classes }) => {
         className={classes.wrapper}
       >
         <CircularProgress />
-        <Typography className={classes.captionMargin} variant="title">
+        <Typography className={classes.captionMargin} variant="h6">
           Loading...
         </Typography>
       </Grid>
