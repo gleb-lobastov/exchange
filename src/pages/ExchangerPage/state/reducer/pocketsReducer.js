@@ -30,7 +30,7 @@ const actualizeBalanceReducer = (
     ...state,
     [passivePocketType]: {
       ...state[passivePocketType],
-      balance: actualizedBalance,
+      balance: parseFloat(actualizedBalance.toFixed(2)),
     },
   };
 };
