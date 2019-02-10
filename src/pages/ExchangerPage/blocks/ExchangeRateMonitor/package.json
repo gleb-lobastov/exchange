@@ -1,0 +1,5 @@
+{
+  "name": "exchange-rate-monitor",
+  "version": "0.0.0",
+  "main": "ExchangeRateMonitor.jsx"
+}
