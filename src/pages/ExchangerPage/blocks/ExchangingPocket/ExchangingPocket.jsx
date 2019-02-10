@@ -9,7 +9,11 @@ import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import { withStyles } from '@material-ui/core/styles';
 import getCurrencySymbolOrName from 'utilities/getCurrencySymbolOrName';
-import { accountPropTypes, denormalizedPocketPropTypes } from '../../propTypes';
+import {
+  pocketType,
+  accountPropTypes,
+  denormalizedPocketPropTypes,
+} from '../../propTypes';
 import { ExchangerContext } from '../../context/exchangerContext';
 import { setPocketAccount, setPocketBalance } from '../../state/actionCreators';
 import AccountSelector from './blocks/AccountSelector';
@@ -22,23 +26,20 @@ const styles = () => ({
 });
 
 const ExchangingPocket = ({
+  activePocketType,
   availableAccounts,
   classes,
   inputProps,
+  onFocus: handleFocus,
   pocket,
   title,
 }) => {
-  const {
-    activePocketType,
-    dispatch,
-    exchangeRate,
-    setActivePocketType,
-  } = useContext(ExchangerContext);
+  const { dispatch, exchangeRate } = useContext(ExchangerContext);
 
   const pocketInputProps = useMemo(
     forwardedInputProps => ({
       ...forwardedInputProps,
-      onFocus: () => setActivePocketType(pocket.pocketType),
+      onFocus: () => handleFocus(pocket.pocketType),
     }),
     [inputProps],
   );
@@ -51,13 +52,12 @@ const ExchangingPocket = ({
       }
       return dispatch(
         setPocketAccount(nextAccountId, {
-          activePocketType,
           targetPocketType: pocket.pocketType,
-          exchangeRate,
+          activePocketType,
         }),
       );
     },
-    [dispatch, activePocketType, pocket.pocketType, exchangeRate],
+    [dispatch, pocket.pocketType],
   );
 
   const handleCopyBalanceToPocket = useCallback(
@@ -130,6 +130,7 @@ const ExchangingPocket = ({
 };
 
 ExchangingPocket.propTypes = {
+  activePocketType: pocketType.isRequired,
   availableAccounts: PropTypes.objectOf(PropTypes.shape(accountPropTypes))
     .isRequired,
   // eslint-disable-next-line react/forbid-prop-types
@@ -137,6 +138,7 @@ ExchangingPocket.propTypes = {
   // eslint-disable-next-line react/forbid-prop-types
   inputProps: PropTypes.object, // forwarded props
   pocket: PropTypes.shape(denormalizedPocketPropTypes).isRequired,
+  onFocus: PropTypes.func.isRequired,
   title: PropTypes.string,
 };
 

@@ -1,7 +1,7 @@
 /* global __OPEN_EXCHANGE_RATES_API_KEY__ */
+import { useState, useEffect } from 'react';
 import DataSourceObserver from 'utilities/DataSourceObserver';
 import prepareQueryParams from 'utilities/prepareQueryParams';
-import { useState, useEffect } from 'react';
 
 const POOLING_LAG = 10000;
 const EXCHANGE_RATES_PROVIDER_URL =
@@ -33,25 +33,12 @@ const exchangeRatesObserver = new DataSourceObserver({
   poolingLag: POOLING_LAG,
 });
 
-const reduceRates = (exchangeRates, { from, to }) => {
-  if (!exchangeRates) {
-    return null;
-  }
-  const {
-    rates: { [from]: rateFrom, [to]: rateTo },
-  } = exchangeRates;
-  return rateTo / rateFrom;
-};
-
-export default (debitCurrencyCode, creditCurrencyCode) => {
+export default () => {
   const [exchangeRates, setExchangeRates] = useState(null);
   useEffect(() => {
     exchangeRatesObserver.subscribe(setExchangeRates);
     return () => exchangeRatesObserver.unsubscribe(setExchangeRates);
   }, []);
 
-  return reduceRates(exchangeRates, {
-    from: debitCurrencyCode,
-    to: creditCurrencyCode,
-  });
+  return exchangeRates;
 };

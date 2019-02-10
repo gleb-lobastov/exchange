@@ -3,6 +3,7 @@ import { POCKET_TYPES, E } from '../../consts';
 import {
   SET_POCKET_ACCOUNT,
   SET_POCKET_BALANCE,
+  UPDATE_EXCHANGE_RATE,
   SWAP_POCKETS,
   EXCHANGE,
 } from '../actionTypes';
@@ -48,26 +49,18 @@ export default (state = {}, action) => {
 
   switch (actualType) {
     case SET_POCKET_ACCOUNT: {
-      const { targetPocketType, activePocketType, exchangeRate } = meta;
+      const { targetPocketType } = meta;
       if (!checkIsValidPocketType(targetPocketType)) {
         return reduceError(state, action, E.INVALID_TARGET_POCKET_TYPE);
       }
-      if (!checkIsValidPocketType(activePocketType)) {
-        return reduceError(state, action, E.INVALID_ACTIVE_POCKET_TYPE);
-      }
 
-      const interimState = {
+      return {
         ...state,
         [targetPocketType]: {
           ...state[targetPocketType],
           accountId: payload,
         },
       };
-
-      return actualizeBalanceReducer(interimState, {
-        activePocketType,
-        exchangeRate,
-      });
     }
 
     case SET_POCKET_BALANCE: {
@@ -92,14 +85,27 @@ export default (state = {}, action) => {
       });
     }
 
-    case SWAP_POCKETS: {
-      const { exchangeRate, activePocketType } = meta;
+    case UPDATE_EXCHANGE_RATE: {
+      const { activePocketType } = meta;
 
       if (!checkIsValidPocketType(activePocketType)) {
         return reduceError(state, action, E.INVALID_ACTIVE_POCKET_TYPE);
       }
 
-      const interimState = {
+      return actualizeBalanceReducer(state, {
+        activePocketType,
+        exchangeRate: payload,
+      });
+    }
+
+    case SWAP_POCKETS: {
+      const { activePocketType } = meta;
+
+      if (!checkIsValidPocketType(activePocketType)) {
+        return reduceError(state, action, E.INVALID_ACTIVE_POCKET_TYPE);
+      }
+
+      return {
         [POCKET_TYPES.DEBIT]: {
           ...state[POCKET_TYPES.DEBIT],
           accountId: state[POCKET_TYPES.CREDIT].accountId,
@@ -109,11 +115,6 @@ export default (state = {}, action) => {
           accountId: state[POCKET_TYPES.DEBIT].accountId,
         },
       };
-
-      return actualizeBalanceReducer(interimState, {
-        activePocketType,
-        exchangeRate,
-      });
     }
 
     case EXCHANGE: {

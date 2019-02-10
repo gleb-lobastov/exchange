@@ -6,17 +6,14 @@ import PocketsSwapper from '../PocketsSwapper';
 
 afterEach(cleanup);
 
-describe('ExchangeButton', () => {
+describe('PocketsSwapper', () => {
   it('should handle click', () => {
     const dispatch = jest.fn();
     const activePocketType = 'mockPocketType';
-    const exchangeRate = 3.31;
 
     const { getByTestId } = render(
-      <ExchangerContext.Provider
-        value={{ dispatch, activePocketType, exchangeRate }}
-      >
-        <PocketsSwapper />
+      <ExchangerContext.Provider value={{ dispatch }}>
+        <PocketsSwapper activePocketType={activePocketType} />
       </ExchangerContext.Provider>,
     );
 
@@ -24,7 +21,7 @@ describe('ExchangeButton', () => {
     expect(dispatch.mock.calls).toHaveLength(1);
     expect(dispatch.mock.calls[0][0]).toEqual({
       type: SWAP_POCKETS,
-      meta: { activePocketType, exchangeRate },
+      meta: { activePocketType },
     });
   });
 });

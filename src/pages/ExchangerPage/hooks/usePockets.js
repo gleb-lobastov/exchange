@@ -20,6 +20,7 @@ const initialValues = {
 export default () => {
   const [state, dispatch] = useReducer(exchangerReducer, initialValues);
   const enhancedDispatch = useCallback(
+    // simulate middleware within reducer hook
     async action => {
       if (action.type === EXCHANGE_REQUEST) {
         await delay(200);

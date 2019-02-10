@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
@@ -14,7 +14,8 @@ import PocketsSwapper from './blocks/PocketsSwapper';
 import ExchangeButton from './blocks/ExchangeButton';
 import { ExchangerContext, memoizeContext } from './context/exchangerContext';
 import usePockets from './hooks/usePockets';
-import useExchangeRate from './hooks/useExchangeRate';
+import useExchangeRates from './hooks/useExchangeRates';
+import { updateExchangeRate } from './state/actionCreators';
 import { selectAccounts, selectPocket, selectPockets } from './state/selectors';
 
 const styles = theme => ({
@@ -26,8 +27,21 @@ const styles = theme => ({
 
 const debitPocketInputProps = { autoFocus: true };
 
+const reduceRates = (exchangeRates, { from, to }) => {
+  if (!exchangeRates) {
+    return null;
+  }
+  const {
+    rates: { [from]: rateFrom, [to]: rateTo },
+  } = exchangeRates;
+  return rateTo / rateFrom;
+};
+
 const ExchangerPage = ({ classes }) => {
   const [activePocketType, setActivePocketType] = useState(POCKET_TYPES.DEBIT);
+  const [exchangeRate, setExchangeRate] = useState(null);
+
+  const exchangeRates = useExchangeRates();
   const [exchangerState, dispatch] = usePockets();
 
   const availableAccounts = selectAccounts(exchangerState);
@@ -37,21 +51,27 @@ const ExchangerPage = ({ classes }) => {
   const debitCurrencyCode = debitPocket.account.currencyCode;
   const creditCurrencyCode = creditPocket.account.currencyCode;
 
-  const exchangeRate = useExchangeRate(debitCurrencyCode, creditCurrencyCode);
+  useEffect(() => {
+    const nextExchangeRate = reduceRates(exchangeRates, {
+      from: debitCurrencyCode,
+      to: creditCurrencyCode,
+    });
+    setExchangeRate(nextExchangeRate);
+    dispatch(updateExchangeRate(nextExchangeRate, { activePocketType }));
+  }, [
+    dispatch,
+    exchangeRates,
+    debitCurrencyCode,
+    creditCurrencyCode,
+    activePocketType,
+  ]);
 
   if (!exchangeRate) {
     return <Loader />;
   }
 
   return (
-    <ExchangerContext.Provider
-      value={memoizeContext(
-        activePocketType,
-        dispatch,
-        exchangeRate,
-        setActivePocketType,
-      )}
-    >
+    <ExchangerContext.Provider value={memoizeContext(dispatch, exchangeRate)}>
       <Card elevation={0} square={true} className={classes.card}>
         <div data-locator="exchanger-pocket-selector">
           <CardHeader
@@ -67,10 +87,12 @@ const ExchangerPage = ({ classes }) => {
             <Grid container={true} spacing={0}>
               <Grid item={true} xs={12} sm={5}>
                 <ExchangingPocket
-                  title="From"
+                  activePocketType={activePocketType}
                   availableAccounts={availableAccounts}
-                  pocket={debitPocket}
                   inputProps={debitPocketInputProps}
+                  onFocus={setActivePocketType}
+                  pocket={debitPocket}
+                  title="From"
                 />
               </Grid>
               <Grid item={true} container={true} xs={12} sm={2}>
@@ -80,14 +102,16 @@ const ExchangerPage = ({ classes }) => {
                   alignItems="center"
                   direction="column"
                 >
-                  <PocketsSwapper />
+                  <PocketsSwapper activePocketType={activePocketType} />
                 </Grid>
               </Grid>
               <Grid item={true} xs={12} sm={5}>
                 <ExchangingPocket
-                  title="To"
+                  activePocketType={activePocketType}
                   availableAccounts={availableAccounts}
+                  onFocus={setActivePocketType}
                   pocket={creditPocket}
+                  title="To"
                 />
               </Grid>
             </Grid>
