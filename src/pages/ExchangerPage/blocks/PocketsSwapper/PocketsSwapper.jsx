@@ -17,9 +17,8 @@ const PocketsSwapper = ({ classes, activePocketType, setActivePocketType }) => {
   const { dispatch } = useContext(ExchangerContext);
 
   const handleSwap = useCallback(() => {
-    const nextActivePocketType = getOtherPocketType(activePocketType);
-    setActivePocketType(nextActivePocketType);
-    dispatch(swapPockets({ activePocketType: nextActivePocketType }));
+    dispatch(swapPockets({ activePocketType }));
+    setActivePocketType(getOtherPocketType(activePocketType));
   }, [dispatch, activePocketType]);
 
   return (

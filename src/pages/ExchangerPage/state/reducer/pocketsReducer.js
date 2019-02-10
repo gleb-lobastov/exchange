@@ -88,7 +88,7 @@ export default (state = {}, action) => {
       }
 
       return actualizeBalanceReducer(state, {
-        activePocketType,
+        activePocketType: getOtherPocketType(activePocketType),
         exchangeRate: payload,
       });
     }
