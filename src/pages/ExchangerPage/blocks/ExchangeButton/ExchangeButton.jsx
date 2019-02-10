@@ -1,6 +1,7 @@
 import React, { useCallback, useContext } from 'react';
 import PropTypes from 'prop-types';
 import Button from '@material-ui/core/Button';
+import { POCKET_TYPES } from '../../consts';
 import { ExchangerContext } from '../../context/exchangerContext';
 import { exchange } from '../../state/actionCreators';
 import { pocketPropTypes, accountPropTypes } from '../../propTypes';
@@ -13,6 +14,11 @@ const ExchangeButton = ({ pockets, availableAccounts }) => {
     [dispatch, pockets, availableAccounts],
   );
 
+  const debitPocket = pockets[POCKET_TYPES.DEBIT];
+  const hasSufficientFunds =
+    debitPocket.balance > 0 &&
+    debitPocket.balance <= availableAccounts[debitPocket.accountId].balance;
+
   return (
     <Button
       data-locator="exchanger-action-button"
@@ -21,6 +27,7 @@ const ExchangeButton = ({ pockets, availableAccounts }) => {
       size="large"
       variant="contained"
       fullWidth={true}
+      disabled={!hasSufficientFunds}
     >
       Exchange
     </Button>
