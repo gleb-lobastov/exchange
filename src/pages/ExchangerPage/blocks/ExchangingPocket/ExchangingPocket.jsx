@@ -1,6 +1,6 @@
 import React from 'react';
 import Input from '@material-ui/core/Input';
-import CurrencySelector from './blocks/CurrencySelector';
+import AccountSelector from './blocks/AccountSelector';
 import PocketBalance from './blocks/PocketBalance';
 
 const availablePockets = {
@@ -22,9 +22,9 @@ const ExchangingPocket = () => {
   const bucksPocket = availablePockets.USD;
   return (
     <div data-locator="exchanger-pocket">
-      <CurrencySelector
-        selectedCurrencyCode={bucksPocket.currencyCode}
-        suggestedCurrencies={Object.keys(availablePockets)}
+      <AccountSelector
+        selectedAccountId={bucksPocket.currencyCode}
+        availableAccounts={availablePockets}
       />
       <PocketBalance pocket={bucksPocket} />
       <div data-locator="exchanger-pocket-input">

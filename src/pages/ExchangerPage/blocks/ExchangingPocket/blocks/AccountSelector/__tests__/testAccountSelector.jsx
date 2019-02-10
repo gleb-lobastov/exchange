@@ -1,13 +1,22 @@
 import React from 'react';
 import { mount, render } from 'enzyme';
-import CurrencySelector from '../CurrencySelector';
+import AccountSelector from '../AccountSelector';
 
-describe('CurrencySelector', () => {
+let availableAccounts;
+beforeEach(() => {
+  availableAccounts = {
+    USD: { currencyCode: 'USD' },
+    EUR: { currencyCode: 'EUR' },
+    RUB: { currencyCode: 'RUB' },
+  };
+});
+
+describe('AccountSelector', () => {
   it('should render selected pocket currency code in closed state', () => {
     const instance = render(
-      <CurrencySelector
-        selectedCurrencyCode="USD"
-        suggestedCurrencies={['USD', 'EUR', 'RUB']}
+      <AccountSelector
+        selectedAccountId="USD"
+        availableAccounts={availableAccounts}
       />,
     );
 
@@ -19,16 +28,15 @@ describe('CurrencySelector', () => {
   });
 
   it('should render suggested currencies in opened state', () => {
-    const suggestedCurrencies = ['USD', 'EUR', 'RUB'];
     const instance = mount(
-      <CurrencySelector
+      <AccountSelector
         MenuProps={{
           // used to find root of opened modal, and filter only menu elements
           classes: { paper: 'openedMenuRoot' },
         }}
         open={true}
-        selectedCurrencyCode="USD"
-        suggestedCurrencies={suggestedCurrencies}
+        selectedAccountId="USD"
+        availableAccounts={availableAccounts}
       />,
     );
 
@@ -37,6 +45,6 @@ describe('CurrencySelector', () => {
         .find('.openedMenuRoot')
         .find('[data-locator^="exchanger-pocket-selector-option"]')
         .map(node => node.text()),
-    ).toEqual(suggestedCurrencies);
+    ).toEqual(['EUR', 'RUB', 'USD']);
   });
 });
