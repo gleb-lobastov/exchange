@@ -40,7 +40,7 @@ const reduceRates = (exchangeRates, { from, to }) => {
   const {
     rates: { [from]: rateFrom, [to]: rateTo },
   } = exchangeRates;
-  return rateFrom / rateTo;
+  return rateTo / rateFrom;
 };
 
 export default (debitCurrencyCode, creditCurrencyCode) => {
