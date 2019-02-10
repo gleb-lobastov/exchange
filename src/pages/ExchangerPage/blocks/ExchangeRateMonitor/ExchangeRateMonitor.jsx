@@ -19,9 +19,11 @@ const ExchangeRateMonitor = ({ debitCurrencyCode, creditCurrencyCode }) => {
   }
   return (
     <>
+      <span>1</span>
       <span data-locator="exchanger-monitor-debit-currency">
         {getCurrencySymbolOrName(debitCurrencyCode)}
       </span>
+      <span>&nbsp;=&nbsp;</span>
       <span data-locator="exchanger-monitor-rate">
         {exchangeRate.toFixed(4)}
       </span>

@@ -1,13 +1,31 @@
 import React, { useCallback, useContext, useMemo } from 'react';
 import PropTypes from 'prop-types';
 import Input from '@material-ui/core/Input';
+import Card from '@material-ui/core/Card';
+import CardContent from '@material-ui/core/CardContent';
+import CardHeader from '@material-ui/core/CardHeader';
+import Grid from '@material-ui/core/Grid';
+import Typography from '@material-ui/core/Typography';
+import { withStyles } from '@material-ui/core/styles';
 import { accountPropTypes, denormalizedPocketPropTypes } from '../../propTypes';
 import { ExchangerContext } from '../../context/exchangerContext';
 import { setPocketAccount, setPocketBalance } from '../../state/actionCreators';
 import AccountSelector from './blocks/AccountSelector';
 import AccountBalance from './blocks/AccountBalance';
 
-const ExchangingPocket = ({ availableAccounts, pocket, inputProps }) => {
+const styles = () => ({
+  title: {
+    marginLeft: '12px', // compensation to negative margin, that used by material-ui
+  },
+});
+
+const ExchangingPocket = ({
+  availableAccounts,
+  classes,
+  inputProps,
+  pocket,
+  title,
+}) => {
   const {
     activePocketType,
     dispatch,
@@ -65,37 +83,59 @@ const ExchangingPocket = ({ availableAccounts, pocket, inputProps }) => {
   );
 
   return (
-    <div data-locator="exchanger-pocket">
-      <AccountSelector
-        selectedAccountId={pocket.account.accountId}
-        availableAccounts={availableAccounts}
-        onChange={handleSelectPocketAccount}
+    <Card data-locator="exchanger-pocket">
+      <CardHeader
+        disableTypography={true}
+        title={
+          <Grid
+            justify="space-between"
+            alignItems="baseline"
+            container={true}
+            spacing={24}
+          >
+            <Typography className={classes.title} variant="subtitle1">
+              {title}
+            </Typography>
+            <AccountBalance
+              account={pocket.account}
+              onClick={handleCopyBalanceToPocket}
+            />
+          </Grid>
+        }
       />
-      <AccountBalance
-        account={pocket.account}
-        onClick={handleCopyBalanceToPocket}
-      />
-      <div data-locator="exchanger-pocket-input">
-        <Input
-          {...pocketInputProps}
-          onChange={handleChangePocketBalance}
-          value={pocket.balance}
+      <CardContent>
+        <AccountSelector
+          selectedAccountId={pocket.account.accountId}
+          availableAccounts={availableAccounts}
+          onChange={handleSelectPocketAccount}
         />
-      </div>
-    </div>
+        <div data-locator="exchanger-pocket-input">
+          <Input
+            fullWidth={true}
+            {...pocketInputProps}
+            onChange={handleChangePocketBalance}
+            value={pocket.balance}
+          />
+        </div>
+      </CardContent>
+    </Card>
   );
 };
 
 ExchangingPocket.propTypes = {
   availableAccounts: PropTypes.objectOf(PropTypes.shape(accountPropTypes))
     .isRequired,
-  pocket: PropTypes.shape(denormalizedPocketPropTypes).isRequired,
+  // eslint-disable-next-line react/forbid-prop-types
+  classes: PropTypes.object.isRequired,
   // eslint-disable-next-line react/forbid-prop-types
   inputProps: PropTypes.object, // forwarded props
+  pocket: PropTypes.shape(denormalizedPocketPropTypes).isRequired,
+  title: PropTypes.string,
 };
 
 ExchangingPocket.defaultProps = {
   inputProps: {},
+  title: '',
 };
 
-export default ExchangingPocket;
+export default withStyles(styles)(ExchangingPocket);

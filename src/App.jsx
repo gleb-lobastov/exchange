@@ -1,5 +1,11 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import ExchangerPage from './pages/ExchangerPage';
+import Layout from 'core/Layout';
+import ExchangerPage from 'pages/ExchangerPage';
 
-ReactDOM.render(<ExchangerPage />, document.getElementById('app'));
+ReactDOM.render(
+  <Layout>
+    <ExchangerPage />
+  </Layout>,
+  document.getElementById('app'),
+);

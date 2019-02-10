@@ -14,7 +14,14 @@ const ExchangeButton = ({ pockets, availableAccounts }) => {
   );
 
   return (
-    <Button data-locator="exchanger-action-button" onClick={handleExchange}>
+    <Button
+      data-locator="exchanger-action-button"
+      onClick={handleExchange}
+      color="primary"
+      size="large"
+      variant="contained"
+      fullWidth={true}
+    >
       Exchange
     </Button>
   );
