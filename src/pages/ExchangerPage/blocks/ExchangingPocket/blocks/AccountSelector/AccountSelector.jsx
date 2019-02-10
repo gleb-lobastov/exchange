@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useCallback } from 'react';
 import PropTypes from 'prop-types';
 import Select from '@material-ui/core/Select';
 import MenuItem from '@material-ui/core/MenuItem';
@@ -15,22 +15,37 @@ const AccountSelector = ({
   selectedAccountId,
   availableAccounts,
   ...forwardedProps
-}) => (
-  <div data-locator="exchanger-pocket-selector">
-    <Select fullWidth={true} {...forwardedProps} value={selectedAccountId}>
-      {/* slice 0..3, onChange move here */}
-      {getSortedAccountsList(availableAccounts).map(
-        ({ currencyCode: suggestedCurrencyCode, balance, accountId }) => (
-          <MenuItem key={`id${accountId}`} value={accountId}>
-            <div data-locator={`exchanger-pocket-selector-option-${accountId}`}>
-              {formatCurrency(balance, suggestedCurrencyCode)}
-            </div>
-          </MenuItem>
-        ),
-      )}
-    </Select>
-  </div>
-);
+}) => {
+  const renderValue = useCallback(
+    accountId => availableAccounts[accountId].currencyCode,
+    [availableAccounts],
+  );
+  return (
+    <div data-locator="exchanger-pocket-selector">
+      <Select
+        fullWidth={true}
+        {...forwardedProps}
+        value={selectedAccountId}
+        renderValue={renderValue}
+      >
+        {/* slice 0..3, onChange move here */}
+        {getSortedAccountsList(availableAccounts).map(
+          ({ currencyCode: suggestedCurrencyCode, balance, accountId }) => (
+            <MenuItem key={`id${accountId}`} value={accountId}>
+              <div
+                data-locator={`exchanger-pocket-selector-option-${accountId}`}
+              >
+                {formatCurrency(balance, suggestedCurrencyCode, {
+                  currencyDisplay: 'code',
+                })}
+              </div>
+            </MenuItem>
+          ),
+        )}
+      </Select>
+    </div>
+  );
+};
 
 AccountSelector.propTypes = {
   selectedAccountId: PropTypes.number.isRequired,
