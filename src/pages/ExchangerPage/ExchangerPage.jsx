@@ -102,7 +102,10 @@ const ExchangerPage = ({ classes }) => {
                   alignItems="center"
                   direction="column"
                 >
-                  <PocketsSwapper activePocketType={activePocketType} />
+                  <PocketsSwapper
+                    activePocketType={activePocketType}
+                    setActivePocketType={setActivePocketType}
+                  />
                 </Grid>
               </Grid>
               <Grid item={true} xs={12} sm={5}>

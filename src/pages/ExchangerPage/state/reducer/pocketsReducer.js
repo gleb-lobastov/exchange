@@ -1,5 +1,6 @@
 import reduceError from 'utilities/reduceError';
 import { POCKET_TYPES, E } from '../../consts';
+import getOtherPocketType from '../../utilities/getOtherPocketType';
 import {
   SET_POCKET_ACCOUNT,
   SET_POCKET_BALANCE,
@@ -10,12 +11,6 @@ import {
 
 const checkIsValidPocketType = pocketType =>
   [POCKET_TYPES.DEBIT, POCKET_TYPES.CREDIT].includes(pocketType);
-
-const getOtherPocketType = pocketType =>
-  ({
-    [POCKET_TYPES.DEBIT]: POCKET_TYPES.CREDIT,
-    [POCKET_TYPES.CREDIT]: POCKET_TYPES.DEBIT,
-  }[pocketType]);
 
 const actualizeBalanceReducer = (
   state = {},
@@ -109,10 +104,12 @@ export default (state = {}, action) => {
         [POCKET_TYPES.DEBIT]: {
           ...state[POCKET_TYPES.DEBIT],
           accountId: state[POCKET_TYPES.CREDIT].accountId,
+          balance: state[POCKET_TYPES.CREDIT].balance,
         },
         [POCKET_TYPES.CREDIT]: {
           ...state[POCKET_TYPES.CREDIT],
           accountId: state[POCKET_TYPES.DEBIT].accountId,
+          balance: state[POCKET_TYPES.DEBIT].balance,
         },
       };
     }

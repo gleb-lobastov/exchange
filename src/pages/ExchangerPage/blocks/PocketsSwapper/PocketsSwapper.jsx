@@ -2,6 +2,7 @@ import React, { useCallback, useContext } from 'react';
 import PropTypes from 'prop-types';
 import SwapIcon from '@material-ui/icons/Cached';
 import { withStyles } from '@material-ui/core/styles';
+import getOtherPocketType from '../../utilities/getOtherPocketType';
 import { ExchangerContext } from '../../context/exchangerContext';
 import { swapPockets } from '../../state/actionCreators';
 import { pocketType } from '../../propTypes';
@@ -12,13 +13,14 @@ const styles = () => ({
   },
 });
 
-const PocketsSwapper = ({ classes, activePocketType }) => {
+const PocketsSwapper = ({ classes, activePocketType, setActivePocketType }) => {
   const { dispatch } = useContext(ExchangerContext);
 
-  const handleSwap = useCallback(
-    () => dispatch(swapPockets({ activePocketType })),
-    [dispatch, activePocketType],
-  );
+  const handleSwap = useCallback(() => {
+    const nextActivePocketType = getOtherPocketType(activePocketType);
+    setActivePocketType(nextActivePocketType);
+    dispatch(swapPockets({ activePocketType: nextActivePocketType }));
+  }, [dispatch, activePocketType]);
 
   return (
     <SwapIcon
@@ -35,6 +37,7 @@ PocketsSwapper.propTypes = {
   activePocketType: pocketType.isRequired,
   // eslint-disable-next-line react/forbid-prop-types
   classes: PropTypes.object.isRequired,
+  setActivePocketType: PropTypes.func.isRequired,
 };
 
 export default withStyles(styles)(PocketsSwapper);
