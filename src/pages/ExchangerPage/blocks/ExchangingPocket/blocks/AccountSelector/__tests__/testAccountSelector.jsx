@@ -5,9 +5,9 @@ import AccountSelector from '../AccountSelector';
 let availableAccounts;
 beforeEach(() => {
   availableAccounts = {
-    USD: { currencyCode: 'USD' },
-    EUR: { currencyCode: 'EUR' },
-    RUB: { currencyCode: 'RUB' },
+    1: { accountId:1, currencyCode: 'USD' },
+    2: { accountId:2, currencyCode: 'EUR' },
+    3: { accountId:3, currencyCode: 'RUB' },
   };
 });
 
@@ -15,7 +15,7 @@ describe('AccountSelector', () => {
   it('should render selected pocket currency code in closed state', () => {
     const instance = render(
       <AccountSelector
-        selectedAccountId="USD"
+        selectedAccountId={1}
         availableAccounts={availableAccounts}
       />,
     );
@@ -35,7 +35,7 @@ describe('AccountSelector', () => {
           classes: { paper: 'openedMenuRoot' },
         }}
         open={true}
-        selectedAccountId="USD"
+        selectedAccountId={1}
         availableAccounts={availableAccounts}
       />,
     );

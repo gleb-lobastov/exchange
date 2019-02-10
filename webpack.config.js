@@ -1,6 +1,8 @@
+const webpack = require('webpack');
 const CleanWebpackPlugin = require('clean-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 
+const OPEN_EXCHANGE_RATES_API_KEY = 'f8ed44b178b646978b564ecf19711da5';
 const isDevelopmentMode = process.env.NODE_ENV === 'development';
 module.exports = {
   mode: isDevelopmentMode ? 'development' : 'production',
@@ -22,6 +24,9 @@ module.exports = {
     ],
   },
   plugins: [
+    new webpack.DefinePlugin({
+      __OPEN_EXCHANGE_RATES_API_KEY__: `"${OPEN_EXCHANGE_RATES_API_KEY}"`,
+    }),
     new CleanWebpackPlugin(['dist/*.*']),
     new HtmlWebpackPlugin({
       title: 'Exchange',

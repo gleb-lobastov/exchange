@@ -1,21 +1,38 @@
 import React from 'react';
 import { render } from 'enzyme';
+import { POCKET_TYPES } from '../../../consts';
 import ExchangingPocket from '../ExchangingPocket';
 
 let availablePockets;
+let availableAccounts;
 beforeEach(() => {
-  availablePockets = {
-    USD: {
+  availableAccounts = {
+    1: {
+      accountId: 1,
       currencyCode: 'USD',
-      balance: 422.2123,
+      balance: 1000,
     },
-    EUR: {
+    2: {
+      accountId: 2,
       currencyCode: 'EUR',
-      balance: 71.7993,
+      balance: 2000,
     },
-    RUB: {
+    3: {
+      accountId: 3,
       currencyCode: 'RUB',
-      balance: 8991.8582,
+      balance: 50000,
+    },
+  };
+  availablePockets = {
+    [POCKET_TYPES.DEBIT]: {
+      pocketType: POCKET_TYPES.DEBIT,
+      account: availableAccounts['1'],
+      balance: 11.21342,
+    },
+    [POCKET_TYPES.CREDIT]: {
+      pocketType: POCKET_TYPES.CREDIT,
+      account: availableAccounts['2'],
+      balance: 9.56783,
     },
   };
 });
@@ -24,8 +41,8 @@ describe('ExchangingPocket blocks', () => {
   it('should render currency selector', () => {
     const instance = render(
       <ExchangingPocket
-        pocket={availablePockets[0]}
-        availablePockets={availablePockets}
+        availableAccounts={availableAccounts}
+        pocket={availablePockets[POCKET_TYPES.DEBIT]}
       />,
     );
 
@@ -34,11 +51,11 @@ describe('ExchangingPocket blocks', () => {
     ).toHaveLength(1);
   });
 
-  it('should render pocket balance', () => {
+  it('should render account balance', () => {
     const instance = render(
       <ExchangingPocket
-        pocket={availablePockets[0]}
-        availablePockets={availablePockets}
+        availableAccounts={availableAccounts}
+        pocket={availablePockets[POCKET_TYPES.DEBIT]}
       />,
     );
 
@@ -50,8 +67,8 @@ describe('ExchangingPocket blocks', () => {
   it('should render exchange amount input', () => {
     const instance = render(
       <ExchangingPocket
-        pocket={availablePockets[0]}
-        availablePockets={availablePockets}
+        availableAccounts={availableAccounts}
+        pocket={availablePockets[POCKET_TYPES.DEBIT]}
       />,
     );
 

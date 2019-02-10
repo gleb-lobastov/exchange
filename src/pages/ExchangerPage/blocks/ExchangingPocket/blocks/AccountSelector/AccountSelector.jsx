@@ -16,17 +16,12 @@ const AccountSelector = ({
   ...forwardedProps
 }) => (
   <div data-locator="exchanger-pocket-selector">
-    <Select
-      {...forwardedProps}
-      value={availableAccounts[selectedAccountId].currencyCode}
-    >
-      {/* slice 0..3 */}
+    <Select {...forwardedProps} value={selectedAccountId}>
+      {/* slice 0..3, onChange move here */}
       {getSortedAccountsList(availableAccounts).map(
-        ({ currencyCode: suggestedCurrency }) => (
-          <MenuItem key={suggestedCurrency} value={suggestedCurrency}>
-            <div
-              data-locator={`exchanger-pocket-selector-option-${suggestedCurrency}`}
-            >
+        ({ currencyCode: suggestedCurrency, accountId }) => (
+          <MenuItem key={`id${accountId}`} value={accountId}>
+            <div data-locator={`exchanger-pocket-selector-option-${accountId}`}>
               {suggestedCurrency}
             </div>
           </MenuItem>
@@ -37,7 +32,7 @@ const AccountSelector = ({
 );
 
 AccountSelector.propTypes = {
-  selectedAccountId: PropTypes.string.isRequired,
+  selectedAccountId: PropTypes.number.isRequired,
   availableAccounts: PropTypes.objectOf(
     PropTypes.shape({ currencyCode: PropTypes.string }),
   ).isRequired,

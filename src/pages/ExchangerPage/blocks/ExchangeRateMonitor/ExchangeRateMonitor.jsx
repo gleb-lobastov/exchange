@@ -1,5 +1,6 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import PropTypes from 'prop-types';
+import { ExchangerContext } from '../../context/exchangerContext';
 
 const getCurrencySymbolOrName = currencyCode =>
   Intl.NumberFormat('ru', {
@@ -11,11 +12,11 @@ const getCurrencySymbolOrName = currencyCode =>
     .format(0)
     .replace(/0\W?/, '');
 
-const ExchangeRateMonitor = ({
-  debitCurrencyCode,
-  creditCurrencyCode,
-  exchangeRate,
-}) => {
+const ExchangeRateMonitor = ({ debitCurrencyCode, creditCurrencyCode }) => {
+  const { exchangeRate } = useContext(ExchangerContext);
+  if (!exchangeRate) {
+    return null;
+  }
   return (
     <>
       <span data-locator="exchanger-monitor-debit-currency">
@@ -34,7 +35,6 @@ const ExchangeRateMonitor = ({
 ExchangeRateMonitor.propTypes = {
   debitCurrencyCode: PropTypes.string.isRequired,
   creditCurrencyCode: PropTypes.string.isRequired,
-  exchangeRate: PropTypes.number.isRequired,
 };
 
 export default ExchangeRateMonitor;

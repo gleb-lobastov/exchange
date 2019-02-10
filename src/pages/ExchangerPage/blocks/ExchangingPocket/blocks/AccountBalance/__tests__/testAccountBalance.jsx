@@ -1,15 +1,19 @@
 import React from 'react';
 import { shallow } from 'enzyme';
-import PocketBalance from '../PocketBalance';
+import AccountBalance from '../AccountBalance';
 
-let pocket;
+const noop = () => {};
+
+let account;
 beforeEach(() => {
-  pocket = { balance: 2.54313, currencyCode: 'USD' };
+  account = { balance: 2.54313, currencyCode: 'USD' };
 });
 
-describe('PocketBalance', () => {
+describe('AccountBalance', () => {
   it('should render passed balance', () => {
-    const instance = shallow(<PocketBalance pocket={pocket} />);
+    const instance = shallow(
+      <AccountBalance account={account} onClick={noop} />,
+    ).dive();
 
     expect(
       instance.find('[data-locator="exchanger-pocket-balance-value"]').text(),
@@ -17,7 +21,9 @@ describe('PocketBalance', () => {
   });
 
   it('should render currency symbol', () => {
-    const instance = shallow(<PocketBalance pocket={pocket} />);
+    const instance = shallow(
+      <AccountBalance account={account} onClick={noop} />,
+    ).dive();
 
     expect(
       instance.find('[data-locator="exchanger-pocket-balance-value"]').text(),

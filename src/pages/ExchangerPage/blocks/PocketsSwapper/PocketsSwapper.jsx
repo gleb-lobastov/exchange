@@ -1,13 +1,25 @@
-import React from 'react';
-import PropTypes from 'prop-types';
+import React, { useCallback, useContext } from 'react';
 import SwapIcon from '@material-ui/icons/Cached';
+import { ExchangerContext } from '../../context/exchangerContext';
+import { swapPockets } from '../../state/actionCreators';
 
-const PocketsSwapper = ({ onSwap: handleSwap }) => {
-  return <SwapIcon color="action" onClick={handleSwap} />;
-};
+const PocketsSwapper = () => {
+  const { dispatch, activePocketType, exchangeRate } = useContext(
+    ExchangerContext,
+  );
 
-PocketsSwapper.propTypes = {
-  onSwap: PropTypes.func.isRequired,
+  const handleSwap = useCallback(
+    () => dispatch(swapPockets({ activePocketType, exchangeRate })),
+    [dispatch, activePocketType, exchangeRate],
+  );
+
+  return (
+    <SwapIcon
+      data-locator="exchanger-swapper"
+      color="action"
+      onClick={handleSwap}
+    />
+  );
 };
 
 export default PocketsSwapper;
