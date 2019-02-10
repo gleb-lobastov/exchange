@@ -8,6 +8,10 @@ module.exports = {
     filename: isDevelopmentMode ? '[name].js' : '[name]-[chunkhash].js',
     publicPath: isDevelopmentMode ? '/' : '/exchange',
   },
+  resolve: {
+    extensions: ['.js', '.jsx'],
+    modules: ['src', 'node_modules'],
+  },
   module: {
     rules: [
       {
@@ -29,9 +33,6 @@ module.exports = {
       favicon: './src/favicon.ico',
     }),
   ],
-  resolve: {
-    extensions: ['.js', '.jsx'],
-  },
   devServer: {
     historyApiFallback: true,
   },
