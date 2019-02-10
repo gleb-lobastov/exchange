@@ -5,9 +5,9 @@ import AccountSelector from '../AccountSelector';
 let availableAccounts;
 beforeEach(() => {
   availableAccounts = {
-    1: { accountId: 1, currencyCode: 'USD' },
-    2: { accountId: 2, currencyCode: 'EUR' },
-    3: { accountId: 3, currencyCode: 'RUB' },
+    1: { accountId: 1, currencyCode: 'USD', balance: 1 },
+    2: { accountId: 2, currencyCode: 'EUR', balance: 1 },
+    3: { accountId: 3, currencyCode: 'RUB', balance: 1 },
   };
 });
 
@@ -21,9 +21,7 @@ describe('AccountSelector', () => {
     );
 
     expect(
-      instance
-        .find('[data-locator^="exchanger-pocket-selector-option"]')
-        .text(),
+      instance.find('[data-locator="exchanger-pocket-selected-option"]').text(),
     ).toEqual('USD');
   });
 
@@ -44,7 +42,7 @@ describe('AccountSelector', () => {
       instance
         .find('.openedMenuRoot')
         .find('[data-locator^="exchanger-pocket-selector-option"]')
-        .map(node => node.text()),
-    ).toEqual(['EUR', 'RUB', 'USD']);
+        .map(node => node.text().replace(/\s/, ' ')), // replace irregular whitespaces
+    ).toEqual(['EUR 1.00', 'RUB 1.00', 'USD 1.00']);
   });
 });

@@ -17,7 +17,11 @@ const AccountSelector = ({
   ...forwardedProps
 }) => {
   const renderValue = useCallback(
-    accountId => availableAccounts[accountId].currencyCode,
+    accountId => (
+      <div data-locator="exchanger-pocket-selected-option">
+        {availableAccounts[accountId].currencyCode}
+      </div>
+    ),
     [availableAccounts],
   );
   return (
