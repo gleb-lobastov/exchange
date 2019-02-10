@@ -1,4 +1,10 @@
-import React, { useCallback, useContext, useMemo } from 'react';
+import React, {
+  useState,
+  useEffect,
+  useCallback,
+  useContext,
+  useMemo,
+} from 'react';
 import PropTypes from 'prop-types';
 import Input from '@material-ui/core/Input';
 import InputAdornment from '@material-ui/core/InputAdornment';
@@ -25,6 +31,9 @@ const styles = () => ({
   },
 });
 
+const moneyToString = amount =>
+  amount ? amount.toFixed(2).replace(/\.0+$/, '') : '';
+
 const ExchangingPocket = ({
   activePocketType,
   availableAccounts,
@@ -34,14 +43,23 @@ const ExchangingPocket = ({
   pocket,
   title,
 }) => {
+  const [currentUserInput, setInputValue] = useState(null);
   const { dispatch, exchangeRate } = useContext(ExchangerContext);
 
+  const isActive = activePocketType === pocket.pocketType;
+
+  // reset currentUserInput on focus change (onBeforeNextRender)
+  useEffect(() => () => setInputValue(null), [isActive]);
+
+  const focusHandler = useCallback(() => handleFocus(pocket.pocketType), [
+    pocket.pocketType,
+  ]);
   const pocketInputProps = useMemo(
     forwardedInputProps => ({
       ...forwardedInputProps,
-      onFocus: () => handleFocus(pocket.pocketType),
+      onFocus: focusHandler,
     }),
-    [inputProps],
+    [inputProps, pocket.pocketType],
   );
 
   const handleSelectPocketAccount = useCallback(
@@ -73,7 +91,13 @@ const ExchangingPocket = ({
 
   const handleChangePocketBalance = useCallback(
     event => {
-      const nextBalance = parseInt(event.target.value, 0) || 0;
+      const {
+        target: { value },
+      } = event;
+
+      setInputValue(value.replace(/[^\d\s.]/, ''));
+
+      const nextBalance = parseFloat(value.replace(/[^\d.]/, ''), 0) || 0;
       return dispatch(
         setPocketBalance(nextBalance, {
           targetPocketType: pocket.pocketType,
@@ -110,13 +134,16 @@ const ExchangingPocket = ({
           selectedAccountId={pocket.account.accountId}
           availableAccounts={availableAccounts}
           onChange={handleSelectPocketAccount}
+          onFocus={focusHandler}
         />
         <div data-locator="exchanger-pocket-input">
           <Input
             fullWidth={true}
             {...pocketInputProps}
             onChange={handleChangePocketBalance}
-            value={pocket.balance}
+            value={
+              (isActive && currentUserInput) || moneyToString(pocket.balance)
+            }
             startAdornment={
               <InputAdornment position="start">
                 {getCurrencySymbolOrName(pocket.account.currencyCode)}
