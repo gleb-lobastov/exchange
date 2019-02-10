@@ -6,6 +6,8 @@ import PocketsSwapper from '../PocketsSwapper';
 
 afterEach(cleanup);
 
+const noop = () => {};
+
 describe('PocketsSwapper', () => {
   it('should handle click', () => {
     const dispatch = jest.fn();
@@ -13,7 +15,10 @@ describe('PocketsSwapper', () => {
 
     const { getByTestId } = render(
       <ExchangerContext.Provider value={{ dispatch }}>
-        <PocketsSwapper activePocketType={activePocketType} />
+        <PocketsSwapper
+          activePocketType={activePocketType}
+          setActivePocketType={noop}
+        />
       </ExchangerContext.Provider>,
     );
 
