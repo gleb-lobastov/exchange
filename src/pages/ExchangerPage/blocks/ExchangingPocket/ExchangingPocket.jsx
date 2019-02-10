@@ -1,12 +1,14 @@
 import React, { useCallback, useContext, useMemo } from 'react';
 import PropTypes from 'prop-types';
 import Input from '@material-ui/core/Input';
+import InputAdornment from '@material-ui/core/InputAdornment';
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
 import CardHeader from '@material-ui/core/CardHeader';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import { withStyles } from '@material-ui/core/styles';
+import getCurrencySymbolOrName from 'utilities/getCurrencySymbolOrName';
 import { accountPropTypes, denormalizedPocketPropTypes } from '../../propTypes';
 import { ExchangerContext } from '../../context/exchangerContext';
 import { setPocketAccount, setPocketBalance } from '../../state/actionCreators';
@@ -115,6 +117,11 @@ const ExchangingPocket = ({
             {...pocketInputProps}
             onChange={handleChangePocketBalance}
             value={pocket.balance}
+            startAdornment={
+              <InputAdornment position="start">
+                {getCurrencySymbolOrName(pocket.account.currencyCode)}
+              </InputAdornment>
+            }
           />
         </div>
       </CardContent>

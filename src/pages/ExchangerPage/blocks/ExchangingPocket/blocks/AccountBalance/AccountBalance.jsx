@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import Button from '@material-ui/core/Button';
 import { withStyles } from '@material-ui/core/styles';
+import formatCurrency from 'utilities/formatCurrency';
 
 const styles = () => ({
   container: {
@@ -32,25 +33,18 @@ const AccountBalance = ({
   classes,
   account: { balance, currencyCode },
   onClick: handleClick,
-}) => {
-  const formattedAmount = Intl.NumberFormat('en', {
-    style: 'currency',
-    currency: currencyCode,
-  }).format(balance);
-
-  return (
-    <div className={classes.container}>
-      <Button className={classes.button} onClick={handleClick}>
-        <span className={classes.hint}>
-          <span className={classes.balance}>balance:&nbsp;</span>
-        </span>
-        <span data-locator="exchanger-pocket-balance-value">
-          {formattedAmount}
-        </span>
-      </Button>
-    </div>
-  );
-};
+}) => (
+  <div className={classes.container}>
+    <Button className={classes.button} onClick={handleClick}>
+      <span className={classes.hint}>
+        <span className={classes.balance}>balance:&nbsp;</span>
+      </span>
+      <span data-locator="exchanger-pocket-balance-value">
+        {formatCurrency(balance, currencyCode)}
+      </span>
+    </Button>
+  </div>
+);
 
 AccountBalance.propTypes = {
   account: PropTypes.shape({

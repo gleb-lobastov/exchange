@@ -1,16 +1,7 @@
 import React, { useContext } from 'react';
 import PropTypes from 'prop-types';
+import getCurrencySymbolOrName from 'utilities/getCurrencySymbolOrName';
 import { ExchangerContext } from '../../context/exchangerContext';
-
-const getCurrencySymbolOrName = currencyCode =>
-  Intl.NumberFormat('ru', {
-    style: 'currency',
-    currency: currencyCode,
-    minimumFractionDigits: 0,
-    maximumFractionDigits: 0,
-  })
-    .format(0)
-    .replace(/0\W?/, '');
 
 const ExchangeRateMonitor = ({ debitCurrencyCode, creditCurrencyCode }) => {
   const { exchangeRate } = useContext(ExchangerContext);
