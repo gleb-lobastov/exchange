@@ -2,6 +2,7 @@ import React, { useCallback } from 'react';
 import PropTypes from 'prop-types';
 import Select from '@material-ui/core/Select';
 import MenuItem from '@material-ui/core/MenuItem';
+import ListSubheader from '@material-ui/core/ListSubheader';
 import formatCurrency from 'utilities/formatCurrency';
 
 const getSortedAccountsList = availableAccounts => {
@@ -32,7 +33,7 @@ const AccountSelector = ({
         value={selectedAccountId}
         renderValue={renderValue}
       >
-        {/* slice 0..3, onChange move here */}
+        <ListSubheader component="div">Account total</ListSubheader>
         {getSortedAccountsList(availableAccounts).map(
           ({ currencyCode: suggestedCurrencyCode, balance, accountId }) => (
             <MenuItem key={`id${accountId}`} value={accountId}>
