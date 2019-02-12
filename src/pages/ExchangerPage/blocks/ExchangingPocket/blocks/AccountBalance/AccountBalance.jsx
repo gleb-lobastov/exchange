@@ -14,7 +14,7 @@ const styles = () => ({
       visibility: 'hidden',
     },
     '&:hover $hint:before': {
-      content: '"convert:"',
+      content: '"apply:"',
       paddingRight: '4px',
       position: 'absolute',
       textAlign: 'right',
