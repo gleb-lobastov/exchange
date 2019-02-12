@@ -97,8 +97,8 @@ describe('setPocketBalance', () => {
   it('should recalculate other pocket balance', () => {
     const balance = 2123;
 
-    // Round value of balance / exchangeRate;
-    const expectedDebitBalance = 16.69;
+    // Value of balance / exchangeRate;
+    const expectedDebitBalance = 16.687366442116392;
 
     const { [POCKET_TYPES.DEBIT]: nextDebitPocketState } = pocketsReducer(
       pocketsInitialState,
@@ -116,8 +116,8 @@ describe('setPocketBalance', () => {
 
 describe('updateExchangeRate', () => {
   it('should recalculate debit pocket balance if debit pocket was in focus', () => {
-    // Round value of pocketsInitialState[POCKET_TYPES.CREDIT].balance / exchangeRate;
-    const expectedCreditBalance = 1.57;
+    // Value of pocketsInitialState[POCKET_TYPES.CREDIT].balance / exchangeRate;
+    const expectedCreditBalance = 1.5720552465488828;
 
     const { [POCKET_TYPES.DEBIT]: nextCreditPocketState } = pocketsReducer(
       pocketsInitialState,
@@ -132,8 +132,8 @@ describe('updateExchangeRate', () => {
   });
 
   it('should recalculate credit pocket balance if credit pocket was in focus', () => {
-    // Round value of pocketsInitialState[POCKET_TYPES.DEBIT].balance * exchangeRate;
-    const expectedDebitBalance = 12722.2;
+    // Value of pocketsInitialState[POCKET_TYPES.DEBIT].balance * exchangeRate;
+    const expectedDebitBalance = 12722.1992;
 
     const { [POCKET_TYPES.CREDIT]: nextDebitPocketState } = pocketsReducer(
       pocketsInitialState,

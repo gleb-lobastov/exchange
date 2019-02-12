@@ -1,5 +1,6 @@
 import React from 'react';
 import { render, fireEvent, cleanup } from 'react-testing-library';
+import { POCKET_TYPES } from '../../../consts';
 import { ExchangerContext } from '../../../context/exchangerContext';
 import { SWAP_POCKETS } from '../../../state/actionTypes';
 import PocketsSwapper from '../PocketsSwapper';
@@ -11,7 +12,7 @@ const noop = () => {};
 describe('PocketsSwapper', () => {
   it('should handle click', () => {
     const dispatch = jest.fn();
-    const activePocketType = 'mockPocketType';
+    const activePocketType = POCKET_TYPES.DEBIT;
 
     const { getByTestId } = render(
       <ExchangerContext.Provider value={{ dispatch }}>
