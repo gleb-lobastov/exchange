@@ -9,7 +9,8 @@ const initialValues = {
   accounts: {
     1: { accountId: 1, balance: Math.random() * 1000, currencyCode: 'USD' },
     2: { accountId: 2, balance: Math.random() * 1000, currencyCode: 'EUR' },
-    3: { accountId: 3, balance: Math.random() * 100000, currencyCode: 'RUB' },
+    3: { accountId: 3, balance: Math.random() * 1000, currencyCode: 'GBP' },
+    4: { accountId: 4, balance: Math.random() * 100000, currencyCode: 'RUB' },
   },
   pockets: {
     [POCKET_TYPES.DEBIT]: { balance: 0, accountId: 1 },
