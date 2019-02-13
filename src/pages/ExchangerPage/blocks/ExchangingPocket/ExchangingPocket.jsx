@@ -80,16 +80,15 @@ const ExchangingPocket = ({
     [dispatch, pocket.pocketType],
   );
 
-  const handleCopyBalanceToPocket = useCallback(
-    () =>
-      dispatch(
-        setPocketBalance(pocket.account.balance, {
-          targetPocketType: pocket.pocketType,
-          exchangeRate,
-        }),
-      ),
-    [dispatch, pocket.account.balance, pocket.pocketType, exchangeRate],
-  );
+  const handleCopyBalanceToPocket = useCallback(() => {
+    setInputValue(null);
+    dispatch(
+      setPocketBalance(pocket.account.balance, {
+        targetPocketType: pocket.pocketType,
+        exchangeRate,
+      }),
+    );
+  }, [dispatch, pocket.account.balance, pocket.pocketType, exchangeRate]);
 
   const handleChangePocketBalance = useCallback(
     event => {
