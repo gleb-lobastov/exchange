@@ -14,7 +14,7 @@ describe('exchangeRatesObserver', () => {
     const dataSourceObserver = new DataSourceObserver({
       poolingLag: POOLING_LAG,
       comparator: () => false,
-      fetch: fetchMock,
+      fetchHandler: fetchMock,
     });
 
     dataSourceObserver.subscribe(listener);
@@ -36,7 +36,7 @@ describe('exchangeRatesObserver', () => {
     const dataSourceObserver = new DataSourceObserver({
       poolingLag: POOLING_LAG,
       comparator: () => false,
-      fetch: async () => fetchMock(),
+      fetchHandler: async () => fetchMock(),
     });
 
     dataSourceObserver.subscribe(listener);
@@ -56,7 +56,7 @@ describe('exchangeRatesObserver', () => {
       poolingLag: POOLING_LAG,
       comparator: ({ value: prevValue } = {}, { value: nextValue } = {}) =>
         prevValue === nextValue,
-      fetch: async () => fetchMock(),
+      fetchHandler: async () => fetchMock(),
     });
 
     dataSourceObserver.subscribe(listener);
@@ -76,7 +76,7 @@ describe('exchangeRatesObserver', () => {
     const dataSourceObserver = new DataSourceObserver({
       poolingLag: POOLING_LAG,
       comparator: () => false,
-      fetch: fetchMock,
+      fetchHandler: fetchMock,
     });
 
     dataSourceObserver.subscribe(listener);
@@ -93,7 +93,7 @@ describe('exchangeRatesObserver', () => {
     const dataSourceObserver = new DataSourceObserver({
       poolingLag: POOLING_LAG,
       comparator: () => false,
-      fetch: fetchMock,
+      fetchHandler: fetchMock,
     });
 
     dataSourceObserver.subscribe(listener);
@@ -114,7 +114,7 @@ describe('exchangeRatesObserver', () => {
     const dataSourceObserver = new DataSourceObserver({
       poolingLag: POOLING_LAG,
       comparator: () => false,
-      fetch: fetchMock,
+      fetchHandler: fetchMock,
     });
 
     dataSourceObserver.subscribe(listenerA);

@@ -1,16 +1,16 @@
 export default class DataSourceObserver {
-  constructor({ poolingLag, comparator, fetch }) {
+  constructor({ poolingLag, comparator, fetchHandler }) {
     if (!poolingLag) {
       throw new Error('Missing pooling lag in configuration');
     }
     if (!comparator) {
-      throw new Error('Missing comparator lag in configuration');
+      throw new Error('Missing comparator in configuration');
     }
-    if (!fetch) {
-      throw new Error('Missing fetch lag in configuration');
+    if (!fetchHandler) {
+      throw new Error('Missing fetchHandler in configuration');
     }
 
-    this.config = { poolingLag, comparator, fetch };
+    this.config = { poolingLag, comparator, fetchHandler };
     this.isFetching = false;
     this.listeners = new Set();
     this.poolId = null;
@@ -18,7 +18,7 @@ export default class DataSourceObserver {
   }
 
   pool = () => {
-    const { fetch, poolingLag, comparator } = this.config;
+    const { fetchHandler, poolingLag, comparator } = this.config;
     this.poolId = setTimeout(this.pool, poolingLag);
 
     if (this.isFetching) {
@@ -26,7 +26,7 @@ export default class DataSourceObserver {
     }
 
     this.isFetching = true;
-    Promise.resolve(fetch(this.poolId)).then(result => {
+    Promise.resolve(fetchHandler(this.poolId)).then(result => {
       this.isFetching = false;
       if (comparator(this.prevResult, result)) {
         return;

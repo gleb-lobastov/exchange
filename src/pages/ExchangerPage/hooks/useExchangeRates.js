@@ -29,7 +29,7 @@ const exchangeRatesObserver = new DataSourceObserver({
     Object.keys(nextRates).every(
       currencyCode => prevRates[currencyCode] === nextRates[currencyCode],
     ),
-  fetch: fetchExchangeRates,
+  fetchHandler: fetchExchangeRates,
   poolingLag: POOLING_LAG,
 });
 
