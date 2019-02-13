@@ -48,6 +48,8 @@ const ExchangingPocket = ({
 
   const isActive = activePocketType === pocket.pocketType;
 
+  // reset currentUserInput on pocket account change
+  useEffect(() => setInputValue(null), [pocket.account.currencyCode]);
   // reset currentUserInput on focus change (onBeforeNextRender)
   useEffect(() => () => setInputValue(null), [isActive]);
 
