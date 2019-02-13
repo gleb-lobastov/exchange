@@ -14,18 +14,18 @@ const checkIsValidPocketType = pocketType =>
 
 const actualizeBalanceReducer = (
   state = {},
-  { activePocketType, exchangeRate }, // no need to be FSA compatible, because it's internal
+  { invariablePocketType, exchangeRate }, // no need to be FSA compatible, because it's internal
 ) => {
+  const alterablePocketType = getOtherPocketType(invariablePocketType);
   const actualizedBalance =
-    activePocketType === POCKET_TYPES.DEBIT
-      ? state[activePocketType].balance * exchangeRate
-      : state[activePocketType].balance / exchangeRate;
+    invariablePocketType === POCKET_TYPES.DEBIT
+      ? state[invariablePocketType].balance * exchangeRate
+      : state[invariablePocketType].balance / exchangeRate;
 
-  const passivePocketType = getOtherPocketType(activePocketType);
   return {
     ...state,
-    [passivePocketType]: {
-      ...state[passivePocketType],
+    [alterablePocketType]: {
+      ...state[alterablePocketType],
       balance: actualizedBalance,
     },
   };
@@ -75,20 +75,20 @@ export default (state = {}, action) => {
       };
 
       return actualizeBalanceReducer(interimState, {
-        activePocketType: targetPocketType,
+        invariablePocketType: targetPocketType,
         exchangeRate,
       });
     }
 
     case UPDATE_EXCHANGE_RATE: {
-      const { activePocketType } = meta;
+      const { invariablePocketType } = meta;
 
-      if (!checkIsValidPocketType(activePocketType)) {
-        return reduceError(state, action, E.INVALID_ACTIVE_POCKET_TYPE);
+      if (!checkIsValidPocketType(invariablePocketType)) {
+        return reduceError(state, action, E.INVALID_INVARIABLE_POCKET_TYPE);
       }
 
       return actualizeBalanceReducer(state, {
-        activePocketType: getOtherPocketType(activePocketType),
+        invariablePocketType,
         exchangeRate: payload,
       });
     }
@@ -97,7 +97,7 @@ export default (state = {}, action) => {
       const { activePocketType } = meta;
 
       if (!checkIsValidPocketType(activePocketType)) {
-        return reduceError(state, action, E.INVALID_ACTIVE_POCKET_TYPE);
+        return reduceError(state, action, E.INVALID_INVARIABLE_POCKET_TYPE);
       }
 
       return {

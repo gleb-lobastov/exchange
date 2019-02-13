@@ -115,14 +115,14 @@ describe('setPocketBalance', () => {
 });
 
 describe('updateExchangeRate', () => {
-  it('should recalculate debit pocket balance if debit pocket was in focus', () => {
-    // Value of pocketsInitialState[POCKET_TYPES.CREDIT].balance / exchangeRate;
-    const expectedCreditBalance = 1.5720552465488828;
+  it('should recalculate credit pocket balance if debit pocket is invariable', () => {
+    // Value of pocketsInitialState[POCKET_TYPES.DEBIT].balance * exchangeRate;
+    const expectedCreditBalance = 12722.1992;
 
-    const { [POCKET_TYPES.DEBIT]: nextCreditPocketState } = pocketsReducer(
+    const { [POCKET_TYPES.CREDIT]: nextCreditPocketState } = pocketsReducer(
       pocketsInitialState,
       updateExchangeRate(exchangeRate, {
-        activePocketType: POCKET_TYPES.DEBIT,
+        invariablePocketType: POCKET_TYPES.DEBIT,
       }),
     );
 
@@ -131,14 +131,14 @@ describe('updateExchangeRate', () => {
     );
   });
 
-  it('should recalculate credit pocket balance if credit pocket was in focus', () => {
-    // Value of pocketsInitialState[POCKET_TYPES.DEBIT].balance * exchangeRate;
-    const expectedDebitBalance = 12722.1992;
+  it('should recalculate debit pocket balance if credit pocket is invariable', () => {
+    // Value of pocketsInitialState[POCKET_TYPES.CREDIT].balance / exchangeRate;
+    const expectedDebitBalance = 1.5720552465488828;
 
-    const { [POCKET_TYPES.CREDIT]: nextDebitPocketState } = pocketsReducer(
+    const { [POCKET_TYPES.DEBIT]: nextDebitPocketState } = pocketsReducer(
       pocketsInitialState,
       updateExchangeRate(exchangeRate, {
-        activePocketType: POCKET_TYPES.CREDIT,
+        invariablePocketType: POCKET_TYPES.CREDIT,
       }),
     );
 

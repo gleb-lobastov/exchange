@@ -7,6 +7,8 @@ import CardActions from '@material-ui/core/CardActions';
 import Grid from '@material-ui/core/Grid';
 import { withStyles } from '@material-ui/core/styles';
 import Loader from 'core/Loader';
+import useIdentityFlag from 'utilities/hooks/useIdentityFlag';
+import getOtherPocketType from './utilities/getOtherPocketType';
 import { POCKET_TYPES } from './consts';
 import ExchangingPocket from './blocks/ExchangingPocket';
 import ExchangeRateMonitor from './blocks/ExchangeRateMonitor';
@@ -37,13 +39,13 @@ const reduceRates = (exchangeRates, { from, to }) => {
   return rateTo / rateFrom;
 };
 
+const getCurrenciesSignature = (debitCurrencyCode, creditCurrencyCode) =>
+  `${debitCurrencyCode}${creditCurrencyCode}`;
+
 const ExchangerPage = ({ classes }) => {
   const [activePocketType, setActivePocketType] = useState(POCKET_TYPES.DEBIT);
-  const [exchangeRate, setExchangeRate] = useState(null);
 
-  const exchangeRates = useExchangeRates();
   const [exchangerState, dispatch] = usePockets();
-
   const availableAccounts = selectAccounts(exchangerState);
   const debitPocket = selectPocket(exchangerState, POCKET_TYPES.DEBIT);
   const creditPocket = selectPocket(exchangerState, POCKET_TYPES.CREDIT);
@@ -51,20 +53,21 @@ const ExchangerPage = ({ classes }) => {
   const debitCurrencyCode = debitPocket.account.currencyCode;
   const creditCurrencyCode = creditPocket.account.currencyCode;
 
+  const exchangeRates = useExchangeRates();
+  const exchangeRate = reduceRates(exchangeRates, {
+    from: debitCurrencyCode,
+    to: creditCurrencyCode,
+  });
+  const isCurrenciesSignatureChanged = !useIdentityFlag(
+    getCurrenciesSignature(debitCurrencyCode, creditCurrencyCode),
+  );
+
   useEffect(() => {
-    const nextExchangeRate = reduceRates(exchangeRates, {
-      from: debitCurrencyCode,
-      to: creditCurrencyCode,
-    });
-    setExchangeRate(nextExchangeRate);
-    dispatch(updateExchangeRate(nextExchangeRate, { activePocketType }));
-  }, [
-    dispatch,
-    exchangeRates,
-    debitCurrencyCode,
-    creditCurrencyCode,
-    activePocketType,
-  ]);
+    const invariablePocketType = isCurrenciesSignatureChanged
+      ? getOtherPocketType(activePocketType)
+      : activePocketType;
+    dispatch(updateExchangeRate(exchangeRate, { invariablePocketType }));
+  }, [dispatch, exchangeRate, activePocketType]);
 
   if (!exchangeRate) {
     return <Loader />;

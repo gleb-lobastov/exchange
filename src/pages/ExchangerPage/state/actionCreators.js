@@ -27,10 +27,10 @@ export const setPocketBalance = (
   meta: { targetPocketType, exchangeRate },
 });
 
-export const updateExchangeRate = (exchangeRate, { activePocketType }) => ({
+export const updateExchangeRate = (exchangeRate, { invariablePocketType }) => ({
   type: UPDATE_EXCHANGE_RATE,
   payload: exchangeRate,
-  meta: { activePocketType },
+  meta: { invariablePocketType },
 });
 
 export const swapPockets = ({ activePocketType }) => ({
