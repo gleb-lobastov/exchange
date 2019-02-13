@@ -1,10 +1,4 @@
-import React, {
-  useState,
-  useEffect,
-  useCallback,
-  useContext,
-  useMemo,
-} from 'react';
+import React, { useState, useCallback, useContext, useMemo } from 'react';
 import PropTypes from 'prop-types';
 import Input from '@material-ui/core/Input';
 import InputAdornment from '@material-ui/core/InputAdornment';
@@ -48,11 +42,6 @@ const ExchangingPocket = ({
 
   const isActive = activePocketType === pocket.pocketType;
 
-  // reset currentUserInput on pocket account change
-  useEffect(() => setInputValue(null), [pocket.account.currencyCode]);
-  // reset currentUserInput on focus change (onBeforeNextRender)
-  useEffect(() => () => setInputValue(null), [isActive]);
-
   const focusHandler = useCallback(() => handleFocus(pocket.pocketType), [
     pocket.pocketType,
   ]);
@@ -60,6 +49,7 @@ const ExchangingPocket = ({
     forwardedInputProps => ({
       ...forwardedInputProps,
       onFocus: focusHandler,
+      onBlur: () => setInputValue(null),
     }),
     [inputProps, pocket.pocketType],
   );
