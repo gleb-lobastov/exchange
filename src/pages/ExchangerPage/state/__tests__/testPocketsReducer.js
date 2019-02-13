@@ -152,10 +152,7 @@ describe('swapPockets', () => {
   it('should exchange accountId`s', () => {
     const nextPocketsState = pocketsReducer(
       pocketsInitialState,
-      swapPockets({
-        activePocketType: POCKET_TYPES.DEBIT,
-        exchangeRate,
-      }),
+      swapPockets({ exchangeRate }),
     );
 
     expect(nextPocketsState).toEqual({

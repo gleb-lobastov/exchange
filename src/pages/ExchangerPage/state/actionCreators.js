@@ -6,16 +6,10 @@ import {
   EXCHANGE_REQUEST,
 } from './actionTypes';
 
-export const setPocketAccount = (
-  nextAccountId,
-  {
-    targetPocketType,
-    activePocketType, // used when action turned to swap pockets
-  },
-) => ({
+export const setPocketAccount = (nextAccountId, { targetPocketType }) => ({
   type: SET_POCKET_ACCOUNT,
   payload: nextAccountId,
-  meta: { targetPocketType, activePocketType },
+  meta: { targetPocketType },
 });
 
 export const setPocketBalance = (
@@ -33,9 +27,8 @@ export const updateExchangeRate = (exchangeRate, { invariablePocketType }) => ({
   meta: { invariablePocketType },
 });
 
-export const swapPockets = ({ activePocketType }) => ({
+export const swapPockets = () => ({
   type: SWAP_POCKETS,
-  meta: { activePocketType },
 });
 
 export const exchange = (pockets, availableAccounts) => ({

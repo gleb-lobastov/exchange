@@ -94,12 +94,6 @@ export default (state = {}, action) => {
     }
 
     case SWAP_POCKETS: {
-      const { activePocketType } = meta;
-
-      if (!checkIsValidPocketType(activePocketType)) {
-        return reduceError(state, action, E.INVALID_INVARIABLE_POCKET_TYPE);
-      }
-
       return {
         [POCKET_TYPES.DEBIT]: {
           ...state[POCKET_TYPES.DEBIT],
