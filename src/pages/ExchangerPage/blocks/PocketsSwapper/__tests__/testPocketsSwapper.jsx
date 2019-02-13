@@ -27,7 +27,6 @@ describe('PocketsSwapper', () => {
     expect(dispatch.mock.calls).toHaveLength(1);
     expect(dispatch.mock.calls[0][0]).toEqual({
       type: SWAP_POCKETS,
-      meta: { activePocketType },
     });
   });
 });
