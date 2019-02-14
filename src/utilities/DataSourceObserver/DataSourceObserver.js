@@ -26,14 +26,17 @@ export default class DataSourceObserver {
     }
 
     this.isFetching = true;
-    Promise.resolve(fetchHandler(this.poolId)).then(result => {
-      this.isFetching = false;
-      if (comparator(this.prevResult, result)) {
-        return;
-      }
-      this.prevResult = result;
-      this.listeners.forEach(listener => listener(result));
-    });
+    Promise.resolve(fetchHandler(this.poolId))
+      .finally(() => {
+        this.isFetching = false;
+      })
+      .then(result => {
+        if (comparator(this.prevResult, result)) {
+          return;
+        }
+        this.prevResult = result;
+        this.listeners.forEach(listener => listener(result));
+      });
   };
 
   startPooling() {
