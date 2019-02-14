@@ -24,6 +24,7 @@ describe('ExchangeButton', () => {
         <ExchangeButton
           pockets={pockets}
           availableAccounts={availableAccounts}
+          isFormInvalid={false}
         />
       </ExchangerContext.Provider>,
     );

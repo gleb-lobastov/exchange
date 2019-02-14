@@ -43,6 +43,7 @@ const getCurrenciesSignature = (debitCurrencyCode, creditCurrencyCode) =>
   `${debitCurrencyCode}${creditCurrencyCode}`;
 
 const ExchangerPage = ({ classes }) => {
+  const [validationErrors, setValidationErrorsState] = useState({});
   const [activePocketType, setActivePocketType] = useState(POCKET_TYPES.DEBIT);
 
   const [exchangerState, dispatch] = usePockets();
@@ -74,7 +75,9 @@ const ExchangerPage = ({ classes }) => {
   }
 
   return (
-    <ExchangerContext.Provider value={memoizeContext(dispatch, exchangeRate)}>
+    <ExchangerContext.Provider
+      value={memoizeContext(dispatch, exchangeRate, setValidationErrorsState)}
+    >
       <Card elevation={0} square={true} className={classes.card}>
         <div data-locator="exchanger-pocket-selector">
           <CardHeader
@@ -124,6 +127,7 @@ const ExchangerPage = ({ classes }) => {
           </CardContent>
           <CardActions>
             <ExchangeButton
+              isFormInvalid={Object.values(validationErrors).some(Boolean)}
               availableAccounts={availableAccounts}
               pockets={selectPockets(exchangerState)}
             />

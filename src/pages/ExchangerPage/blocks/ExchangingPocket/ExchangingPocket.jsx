@@ -38,9 +38,25 @@ const ExchangingPocket = ({
   title,
 }) => {
   const [currentUserInput, setInputValue] = useState(null);
-  const { dispatch, exchangeRate } = useContext(ExchangerContext);
+  const {
+    dispatch,
+    exchangeRate,
+    setValidationErrorsState = () => {},
+  } = useContext(ExchangerContext);
 
   const isActive = activePocketType === pocket.pocketType;
+  const isValid =
+    !currentUserInput ||
+    !Number.isNaN(Number(currentUserInput.replace(/\s/, '')));
+
+  setValidationErrorsState(prevState =>
+    Boolean(prevState[pocket.pocketType]) === isValid
+      ? {
+          ...prevState,
+          [pocket.pocketType]: !isValid,
+        }
+      : prevState,
+  );
 
   const focusHandler = useCallback(() => handleFocus(pocket.pocketType), [
     pocket.pocketType,
@@ -130,6 +146,7 @@ const ExchangingPocket = ({
         <div data-locator="exchanger-pocket-input">
           <Input
             fullWidth={true}
+            error={!isValid}
             {...pocketInputProps}
             onChange={handleChangePocketBalance}
             value={

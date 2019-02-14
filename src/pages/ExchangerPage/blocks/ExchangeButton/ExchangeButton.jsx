@@ -6,7 +6,7 @@ import { ExchangerContext } from '../../context/exchangerContext';
 import { exchange } from '../../state/actionCreators';
 import { pocketPropTypes, accountPropTypes } from '../../propTypes';
 
-const ExchangeButton = ({ pockets, availableAccounts }) => {
+const ExchangeButton = ({ pockets, availableAccounts, isFormInvalid }) => {
   const { dispatch } = useContext(ExchangerContext);
 
   const handleExchange = useCallback(
@@ -27,7 +27,7 @@ const ExchangeButton = ({ pockets, availableAccounts }) => {
       size="large"
       variant="contained"
       fullWidth={true}
-      disabled={!hasSufficientFunds}
+      disabled={isFormInvalid || !hasSufficientFunds}
     >
       Exchange
     </Button>
@@ -35,6 +35,7 @@ const ExchangeButton = ({ pockets, availableAccounts }) => {
 };
 
 ExchangeButton.propTypes = {
+  isFormInvalid: PropTypes.bool.isRequired,
   pockets: PropTypes.objectOf(PropTypes.shape(pocketPropTypes)).isRequired,
   availableAccounts: PropTypes.objectOf(PropTypes.shape(accountPropTypes))
     .isRequired,
