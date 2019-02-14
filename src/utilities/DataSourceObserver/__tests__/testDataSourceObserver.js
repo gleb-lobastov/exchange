@@ -6,6 +6,13 @@ beforeEach(() => {
   jest.useFakeTimers();
 });
 
+// see jest.advanceTimersByTime vs promises explanation
+// https://stackoverflow.com/a/52196951/4334913
+const advanceTimersByTime = async timeout => {
+  await jest.advanceTimersByTime(timeout);
+  await Promise.resolve();
+};
+
 describe('exchangeRatesObserver', () => {
   it('should fetch only if have subscribers', async () => {
     const listener = jest.fn();
@@ -18,14 +25,14 @@ describe('exchangeRatesObserver', () => {
     });
 
     dataSourceObserver.subscribe(listener);
-    await jest.advanceTimersByTime(POOLING_LAG);
-    await jest.advanceTimersByTime(POOLING_LAG);
+    await advanceTimersByTime(POOLING_LAG);
+    await advanceTimersByTime(POOLING_LAG);
     dataSourceObserver.unsubscribe(listener);
-    await jest.advanceTimersByTime(POOLING_LAG);
-    await jest.advanceTimersByTime(POOLING_LAG);
-    await jest.advanceTimersByTime(POOLING_LAG);
-    await jest.advanceTimersByTime(POOLING_LAG);
-    await jest.advanceTimersByTime(POOLING_LAG);
+    await advanceTimersByTime(POOLING_LAG);
+    await advanceTimersByTime(POOLING_LAG);
+    await advanceTimersByTime(POOLING_LAG);
+    await advanceTimersByTime(POOLING_LAG);
+    await advanceTimersByTime(POOLING_LAG);
     expect(fetchMock.mock.calls).toHaveLength(2);
   });
 
@@ -40,9 +47,9 @@ describe('exchangeRatesObserver', () => {
     });
 
     dataSourceObserver.subscribe(listener);
-    await jest.advanceTimersByTime(POOLING_LAG);
-    await jest.advanceTimersByTime(POOLING_LAG);
-    await jest.advanceTimersByTime(POOLING_LAG);
+    await advanceTimersByTime(POOLING_LAG);
+    await advanceTimersByTime(POOLING_LAG);
+    await advanceTimersByTime(POOLING_LAG);
     expect(fetchMock.mock.calls).toHaveLength(3);
     dataSourceObserver.unsubscribe(listener);
   });
@@ -60,11 +67,11 @@ describe('exchangeRatesObserver', () => {
     });
 
     dataSourceObserver.subscribe(listener);
-    await jest.advanceTimersByTime(POOLING_LAG);
-    await jest.advanceTimersByTime(POOLING_LAG);
-    await jest.advanceTimersByTime(POOLING_LAG);
-    await jest.advanceTimersByTime(POOLING_LAG);
-    await jest.advanceTimersByTime(POOLING_LAG);
+    await advanceTimersByTime(POOLING_LAG);
+    await advanceTimersByTime(POOLING_LAG);
+    await advanceTimersByTime(POOLING_LAG);
+    await advanceTimersByTime(POOLING_LAG);
+    await advanceTimersByTime(POOLING_LAG);
     expect(listener.mock.calls).toHaveLength(2);
     dataSourceObserver.unsubscribe(listener);
   });
@@ -97,11 +104,12 @@ describe('exchangeRatesObserver', () => {
     });
 
     dataSourceObserver.subscribe(listener);
-    await jest.advanceTimersByTime(POOLING_LAG);
-    await jest.advanceTimersByTime(POOLING_LAG);
-    await jest.advanceTimersByTime(POOLING_LAG);
-    await jest.advanceTimersByTime(POOLING_LAG);
-    await jest.advanceTimersByTime(POOLING_LAG);
+    await advanceTimersByTime(POOLING_LAG);
+    await advanceTimersByTime(POOLING_LAG);
+    await advanceTimersByTime(POOLING_LAG);
+    await advanceTimersByTime(POOLING_LAG);
+    await advanceTimersByTime(POOLING_LAG);
+    await Promise.resolve(); // allow any pending jobs in the PromiseJobs queue to run
     expect(fetchMock.mock.calls).toHaveLength(1);
     dataSourceObserver.unsubscribe(listener);
   });
@@ -119,7 +127,8 @@ describe('exchangeRatesObserver', () => {
 
     dataSourceObserver.subscribe(listenerA);
     dataSourceObserver.subscribe(listenerB);
-    await jest.advanceTimersByTime(POOLING_LAG);
+    await advanceTimersByTime(POOLING_LAG);
+    await Promise.resolve(); // 🤔 seems that mentioned advanceTimersByTime issue fixed incompletely
     expect(listenerA.mock.calls).toHaveLength(1);
     expect(listenerB.mock.calls).toHaveLength(1);
     dataSourceObserver.unsubscribe(listenerA);
